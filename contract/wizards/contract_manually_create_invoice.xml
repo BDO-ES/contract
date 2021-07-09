@@ -22,12 +22,10 @@
                             <span
                                 attrs="{'invisible': [('contract_to_invoice_count', '&gt;', 1)]}"
                             >
-                                contract to invoice
                             </span>
                             <span
                                 attrs="{'invisible': [('contract_to_invoice_count', '&lt;', 1)]}"
                             >
-                                contracts to invoice
                             </span>
                         </button>
                     </group>

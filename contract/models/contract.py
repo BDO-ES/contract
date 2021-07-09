@@ -25,7 +25,7 @@ class ContractContract(models.Model):
         "portal.mixin",
     ]
 
-    active = fields.Boolean(default=True,)
+    active = fields.Boolean(default=True, tracking=True)
     code = fields.Char(string="Reference",)
     group_id = fields.Many2one(
         string="Group", comodel_name="account.analytic.account", ondelete="restrict",
