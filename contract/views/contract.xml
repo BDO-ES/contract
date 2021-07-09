@@ -91,7 +91,7 @@
                         </button>
                     </div>
                     <div class="oe_title">
-                        <label for="name" string="Contract Name" class="oe_edit_only" />
+                        <label for="name" string="Contract Name"/>
                         <h3>
                             <field
                                 name="name"
@@ -181,7 +181,7 @@
                                 name="contract_line_fixed_ids"
                                 attrs="{'readonly': [('is_terminated','=',True)], 'invisible': [('line_recurrence', '=', True)]}"
                                 widget="section_and_note_one2many"
-                                context="{'default_contract_type': contract_type, 'default_recurring_rule_type': recurring_rule_type, 'default_recurring_invoicing_type': recurring_invoicing_type, 'default_recurring_interval': recurring_interval, 'default_date_start': date_start, 'default_recurring_next_date': recurring_next_date}"
+                                context="{'default_contract_type': contract_type, 'default_recurring_rule_type': recurring_rule_type, 'default_recurring_invoicing_type': recurring_invoicing_type, 'default_recurring_interval': recurring_interval, 'default_date_start': date_start, 'default_recurring_next_date': recurring_next_date, 'default_analytic_account_id': group_id, 'contract_id': active_id}"
                             >
                                 <tree
                                     decoration-muted="is_canceled"
@@ -285,7 +285,7 @@
                                 name="contract_line_ids"
                                 attrs="{'readonly': [('is_terminated','=',True)], 'invisible': [('line_recurrence', '=', False)]}"
                                 widget="section_and_note_one2many"
-                                context="{'default_contract_type': contract_type}"
+                                context="{'default_contract_type': contract_type, 'default_recurring_rule_type': recurring_rule_type, 'default_recurring_invoicing_type': recurring_invoicing_type, 'default_recurring_interval': recurring_interval, 'default_date_start': date_start, 'default_recurring_next_date': recurring_next_date, 'default_analytic_account_id': group_id, 'contract_id': active_id}"
                             >
                                 <tree
                                     decoration-muted="is_canceled"
@@ -441,6 +441,7 @@
                                 />
                                 <field
                                     name="invoice_partner_id"
+                                    domain="['|',('parent_id', '=', partner_id),('id', '=', partner_id)]"
                                     attrs="{'readonly': [('is_terminated','=',True)]}"
                                     required="1"
                                 />

@@ -26,25 +26,28 @@ class ContractContract(models.Model):
     ]
 
     active = fields.Boolean(default=True, tracking=True)
-    code = fields.Char(string="Reference",)
+    code = fields.Char(string="Reference", tracking=True)
     group_id = fields.Many2one(
-        string="Group", comodel_name="account.analytic.account", ondelete="restrict",
+        string="Group", comodel_name="account.analytic.account",
+        ondelete="restrict", tracking=True
     )
     currency_id = fields.Many2one(
         compute="_compute_currency_id",
         inverse="_inverse_currency_id",
         comodel_name="res.currency",
-        string="Currency",
+        string="Currency", tracking=True
     )
-    manual_currency_id = fields.Many2one(comodel_name="res.currency", readonly=True,)
+    manual_currency_id = fields.Many2one(
+        comodel_name="res.currency", readonly=True, tracking=True)
     contract_template_id = fields.Many2one(
-        string="Contract Template", comodel_name="contract.template"
+        string="Contract Template", comodel_name="contract.template",
+        tracking=True
     )
     contract_line_ids = fields.One2many(
         string="Contract lines",
         comodel_name="contract.line",
         inverse_name="contract_id",
-        copy=True,
+        copy=True, tracking=True
     )
     # Trick for being able to have 2 different views for the same o2m
     # We need this as one2many widget doesn't allow to define in the view
@@ -54,33 +57,37 @@ class ContractContract(models.Model):
     contract_line_fixed_ids = fields.One2many(
         string="Contract lines (fixed)",
         comodel_name="contract.line",
-        inverse_name="contract_id",
+        inverse_name="contract_id", tracking=True
     )
 
     user_id = fields.Many2one(
         comodel_name="res.users",
         string="Responsible",
         index=True,
-        default=lambda self: self.env.user,
+        default=lambda self: self.env.user, tracking=True
     )
     create_invoice_visibility = fields.Boolean(
-        compute="_compute_create_invoice_visibility"
+        compute="_compute_create_invoice_visibility", tracking=True
     )
-    date_end = fields.Date(compute="_compute_date_end", store=True, readonly=False)
+    date_end = fields.Date(
+        compute="_compute_date_end", store=True, readonly=False, tracking=True)
     payment_term_id = fields.Many2one(
-        comodel_name="account.payment.term", string="Payment Terms", index=True
+        comodel_name="account.payment.term", string="Payment Terms",
+        index=True, tracking=True
     )
     invoice_count = fields.Integer(compute="_compute_invoice_count")
     fiscal_position_id = fields.Many2one(
         comodel_name="account.fiscal.position",
         string="Fiscal Position",
-        ondelete="restrict",
+        ondelete="restrict", tracking=True
     )
     invoice_partner_id = fields.Many2one(
-        string="Invoicing contact", comodel_name="res.partner", ondelete="restrict",
+        string="Invoicing contact", comodel_name="res.partner",
+        ondelete="restrict", tracking=True
     )
     partner_id = fields.Many2one(
-        comodel_name="res.partner", inverse="_inverse_partner_id", required=True
+        comodel_name="res.partner", inverse="_inverse_partner_id",
+        required=True, tracking=True
     )
 
     commercial_partner_id = fields.Many2one(
@@ -90,10 +97,13 @@ class ContractContract(models.Model):
         store=True,
         string="Commercial Entity",
         index=True,
+        tracking=True
     )
-    tag_ids = fields.Many2many(comodel_name="contract.tag", string="Tags")
-    note = fields.Text(string="Notes")
-    is_terminated = fields.Boolean(string="Terminated", readonly=True, copy=False)
+    tag_ids = fields.Many2many(
+        comodel_name="contract.tag", string="Tags", tracking=True)
+    note = fields.Text(string="Notes", tracking=True)
+    is_terminated = fields.Boolean(
+        string="Terminated", readonly=True, copy=False, tracking=True)
     terminate_reason_id = fields.Many2one(
         comodel_name="contract.terminate.reason",
         string="Termination Reason",
