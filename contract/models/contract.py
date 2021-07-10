@@ -67,7 +67,7 @@ class ContractContract(models.Model):
         default=lambda self: self.env.user, tracking=True
     )
     create_invoice_visibility = fields.Boolean(
-        compute="_compute_create_invoice_visibility", tracking=True
+        compute="_compute_create_invoice_visibility",
     )
     date_end = fields.Date(
         compute="_compute_date_end", store=True, readonly=False, tracking=True)

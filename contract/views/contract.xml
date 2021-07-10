@@ -92,14 +92,14 @@
                     </div>
                     <div class="oe_title">
                         <label for="name" string="Contract Name"/>
-                        <h3>
+                        <h2>
                             <field
                                 name="name"
                                 class="oe_inline"
                                 attrs="{'readonly': [('is_terminated','=',True)]}"
                                 placeholder="e.g. Contract XYZ"
                             />
-                        </h3>
+                        </h2>
                     </div>
                     <group name="main">
                         <group>
@@ -142,41 +142,41 @@
                             <field name="tag_ids" widget="many2many_tags" />
                         </group>
                     </group>
-                    <group name="recurring_invoices">
-                        <field name="line_recurrence" class="oe_inline" />
-                        <label for="line_recurrence" />
-                        <group attrs="{'invisible': [('line_recurrence', '=', True)]}">
-                            <label for="recurring_interval" />
-                            <div class="o_row">
-                                <field
-                                    name="recurring_interval"
-                                    attrs="{'required': [('line_recurrence', '=', False)]}"
-                                    class="oe_inline"
-                                    nolabel="1"
-                                />
-                                <field
-                                    name="recurring_rule_type"
-                                    attrs="{'required': [('line_recurrence', '=', False)]}"
-                                    class="oe_inline"
-                                    nolabel="1"
-                                />
-                            </div>
-                            <field
-                                name="recurring_invoicing_type"
-                                attrs="{'required': [('line_recurrence', '=', False)]}"
-                            />
-                        </group>
-                        <group attrs="{'invisible': [('line_recurrence', '=', True)]}">
-                            <field
-                                name="date_start"
-                                attrs="{'required': [('line_recurrence', '=', False)]}"
-                            />
-                            <field name="date_end" />
-                            <field name="recurring_next_date" />
-                        </group>
-                    </group>
                     <notebook>
                         <page name="recurring_invoice_line" string="Recurring Invoices">
+                            <group name="recurring_invoices">
+                                <field name="line_recurrence" class="oe_inline" />
+                                <label for="line_recurrence" />
+                                <group attrs="{'invisible': [('line_recurrence', '=', True)]}">
+                                    <label for="recurring_interval" />
+                                    <div class="o_row">
+                                        <field
+                                            name="recurring_interval"
+                                            attrs="{'required': [('line_recurrence', '=', False)]}"
+                                            class="oe_inline"
+                                            nolabel="1"
+                                        />
+                                        <field
+                                            name="recurring_rule_type"
+                                            attrs="{'required': [('line_recurrence', '=', False)]}"
+                                            class="oe_inline"
+                                            nolabel="1"
+                                        />
+                                    </div>
+                                    <field
+                                        name="recurring_invoicing_type"
+                                        attrs="{'required': [('line_recurrence', '=', False)]}"
+                                    />
+                                </group>
+                                <group attrs="{'invisible': [('line_recurrence', '=', True)]}">
+                                    <field
+                                        name="date_start"
+                                        attrs="{'required': [('line_recurrence', '=', False)]}"
+                                    />
+                                    <field name="date_end" />
+                                    <field name="recurring_next_date" />
+                                </group>
+                            </group>
                             <field
                                 name="contract_line_fixed_ids"
                                 attrs="{'readonly': [('is_terminated','=',True)], 'invisible': [('line_recurrence', '=', True)]}"

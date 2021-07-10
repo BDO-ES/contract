@@ -561,6 +561,7 @@ class ContractLine(models.Model):
                 "product_uom_id": self.uom_id.id,
                 "discount": self.discount,
                 "contract_line_id": self.id,
+                "contract_id": self.contract_id.id,
                 "sequence": self.sequence,
                 "name": name,
                 "analytic_account_id": self.analytic_account_id.id,
