@@ -18,8 +18,6 @@ class ContractContract(models.Model):
     _description = "Contract"
     _order = "code, name asc"
     _inherit = [
-        "mail.thread",
-        "mail.activity.mixin",
         "contract.abstract.contract",
         "contract.recurrency.mixin",
         "portal.mixin",

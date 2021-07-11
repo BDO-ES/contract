@@ -21,8 +21,6 @@ class ContractLine(models.Model):
     _inherit = [
         "contract.abstract.contract.line",
         "contract.recurrency.mixin",
-        "mail.thread",
-        "mail.activity.mixin",
     ]
     _order = "sequence,id"
 
