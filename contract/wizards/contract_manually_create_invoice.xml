@@ -19,13 +19,11 @@
                             attrs="{'invisible': [('contract_to_invoice_count', '=', 0)]}"
                         >
                             <field name="contract_to_invoice_count" />
-                            <span
-                                attrs="{'invisible': [('contract_to_invoice_count', '&gt;', 1)]}"
-                            >
+                            <span attrs="{'invisible': [('contract_to_invoice_count', '&gt;', 1)]}">
+                                contrato a facturar
                             </span>
-                            <span
-                                attrs="{'invisible': [('contract_to_invoice_count', '&lt;', 1)]}"
-                            >
+                            <span attrs="{'invisible': [('contract_to_invoice_count', '&lt;', 1)]}">
+                                contratos a facturar
                             </span>
                         </button>
                     </group>

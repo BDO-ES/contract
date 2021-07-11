@@ -40,7 +40,7 @@ class ContractManuallyCreateInvoice(models.TransientModel):
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
-            "name": _("Contracts to invoice"),
+            "name": _("Contratos a facturar"),
             "res_model": "contract.contract",
             "domain": [("id", "in", self.contract_to_invoice_ids.ids)],
             "view_mode": "tree,form",

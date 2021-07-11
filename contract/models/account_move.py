@@ -19,3 +19,5 @@ class AccountMoveLine(models.Model):
     contract_line_id = fields.Many2one(
         "contract.line", string="Contract Line", index=True
     )
+    contract_id = fields.Many2one(
+        "contract.contract", string="Contrato", index=True)
