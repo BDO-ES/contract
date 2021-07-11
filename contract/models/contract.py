@@ -144,6 +144,7 @@ class ContractContract(models.Model):
             self._modification_mail_send()
         else:
             res = super(ContractContract, self).write(vals)
+
         return res
 
     @api.model
@@ -260,7 +261,7 @@ class ContractContract(models.Model):
         form_view = self.env.ref("account.view_move_form", raise_if_not_found=False)
         action = {
             "type": "ir.actions.act_window",
-            "name": "Invoices",
+            "name": "Facturas",
             "res_model": "account.move",
             "view_mode": "tree,kanban,form,calendar,pivot,graph,activity",
             "domain": [("id", "in", self._get_related_invoices().ids)],

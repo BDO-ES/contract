@@ -11,6 +11,8 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from .contract_line_constraints import get_allowed
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class ContractLine(models.Model):
@@ -115,9 +117,11 @@ class ContractLine(models.Model):
     )
 
     @api.depends(
-        "last_date_invoiced", "date_start", "date_end", "contract_id.last_date_invoiced"
+        "last_date_invoiced", "date_start", "date_end",
+        "contract_id.last_date_invoiced", "contract_id.next_period_date_start"
     )
     def _compute_next_period_date_start(self):
+        _logger.error(('_compute_next_period_date_start'))
         """Rectify next period date start if another line in the contract has been
         already invoiced previously when the recurrence is by contract.
         """
@@ -131,7 +135,13 @@ class ContractLine(models.Model):
                 ) + relativedelta(days=1)
                 if rec.date_end and next_period_date_start > rec.date_end:
                     next_period_date_start = False
-                rec.next_period_date_start = next_period_date_start
+                # NUEVO
+                if rec.next_period_date_end and next_period_date_start > rec.next_period_date_end:
+                    _logger.error(('next_period_date_start', next_period_date_start))
+                    rec.next_period_date_start = rec.contract_id.next_period_date_start
+                else:
+                    rec.next_period_date_start = next_period_date_start
+                _logger.error(('next_period_date_start', rec.next_period_date_start))
             else:
                 rest |= rec
         super(ContractLine, rest)._compute_next_period_date_start()

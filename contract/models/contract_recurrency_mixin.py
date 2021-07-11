@@ -9,6 +9,10 @@ from odoo import api, fields, models
 
 class ContractRecurrencyBasicMixin(models.AbstractModel):
     _name = "contract.recurrency.basic.mixin"
+    _inherit = [
+        "mail.thread",
+        "mail.activity.mixin",
+    ]
     _description = "Basic recurrency mixin for abstract contract models"
 
     recurring_rule_type = fields.Selection(
@@ -24,6 +28,7 @@ class ContractRecurrencyBasicMixin(models.AbstractModel):
         default="monthly",
         string="Recurrence",
         help="Specify Interval for automatic invoice generation.",
+        tracking=True
     )
     recurring_invoicing_type = fields.Selection(
         [("pre-paid", "Pre-paid"), ("post-paid", "Post-paid")],
@@ -32,7 +37,7 @@ class ContractRecurrencyBasicMixin(models.AbstractModel):
         help=(
             "Specify if the invoice must be generated at the beginning "
             "(pre-paid) or end (post-paid) of the period."
-        ),
+        ), tracking=True
     )
     recurring_invoicing_offset = fields.Integer(
         compute="_compute_recurring_invoicing_offset",
@@ -40,13 +45,14 @@ class ContractRecurrencyBasicMixin(models.AbstractModel):
         help=(
             "Number of days to offset the invoice from the period end "
             "date (in post-paid mode) or start date (in pre-paid mode)."
-        ),
+        ), tracking=True
     )
     recurring_interval = fields.Integer(
-        default=1, string="Invoice Every", help="Invoice every (Days/Week/Month/Year)",
+        default=1, string="Invoice Every",
+        help="Invoice every (Days/Week/Month/Year)", tracking=True
     )
-    date_start = fields.Date(string="Date Start")
-    recurring_next_date = fields.Date(string="Date of Next Invoice")
+    date_start = fields.Date(string="Date Start", tracking=True)
+    recurring_next_date = fields.Date(string="Date of Next Invoice", tracking=True)
 
     @api.depends("recurring_invoicing_type", "recurring_rule_type")
     def _compute_recurring_invoicing_offset(self):
@@ -74,19 +80,22 @@ class ContractRecurrencyMixin(models.AbstractModel):
     _name = "contract.recurrency.mixin"
     _description = "Recurrency mixin for contract models"
 
-    date_start = fields.Date(default=lambda self: fields.Date.context_today(self))
+    date_start = fields.Date(
+        default=lambda self: fields.Date.context_today(self), tracking=True)
     recurring_next_date = fields.Date(
-        compute="_compute_recurring_next_date", store=True, readonly=False, copy=True
+        compute="_compute_recurring_next_date",
+        store=True, readonly=False, copy=True, tracking=True
     )
-    date_end = fields.Date(string="Date End", index=True)
+    date_end = fields.Date(string="Date End", index=True, tracking=True)
     next_period_date_start = fields.Date(
         string="Next Period Start", compute="_compute_next_period_date_start",
+        tracking=True
     )
     next_period_date_end = fields.Date(
         string="Next Period End", compute="_compute_next_period_date_end",
     )
     last_date_invoiced = fields.Date(
-        string="Last Date Invoiced", readonly=True, copy=False
+        string="Last Date Invoiced", readonly=True, copy=False, tracking=True
     )
 
     @api.depends("next_period_date_start")
