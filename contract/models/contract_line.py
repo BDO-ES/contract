@@ -596,6 +596,9 @@ class ContractLine(models.Model):
 
     def _insert_markers(self, first_date_invoiced, last_date_invoiced):
         self.ensure_one()
+        _logger.error(('_inert_markers OCA self.invoice_name', self.invoice_name))
+        _logger.error(('_inert_markers OCA first_date_invoiced', first_date_invoiced))
+        _logger.error(('_inert_markers OCA last_date_invoiced', last_date_invoiced))
         lang_obj = self.env["res.lang"]
         lang = lang_obj.search(
             [("code", "=", self.contract_id.partner_id.lang)])

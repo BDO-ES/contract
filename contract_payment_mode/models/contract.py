@@ -8,7 +8,7 @@ class ContractContract(models.Model):
         comodel_name="account.payment.mode",
         string="Payment Mode",
         domain=[("payment_type", "=", "inbound")],
-        index=True,
+        index=True, tracking=True
     )
 
     @api.onchange("partner_id")

@@ -22,7 +22,8 @@ class ContractAbstractContract(models.AbstractModel):
     partner_id = fields.Many2one(
         comodel_name="res.partner", string="Partner", index=True
     )
-    pricelist_id = fields.Many2one(comodel_name="product.pricelist", string="Pricelist")
+    pricelist_id = fields.Many2one(
+        comodel_name="product.pricelist", string="Pricelist", tracking=True)
     contract_type = fields.Selection(
         selection=[("sale", "Customer"), ("purchase", "Supplier")],
         default="sale",
@@ -35,7 +36,7 @@ class ContractAbstractContract(models.AbstractModel):
         compute="_compute_journal_id",
         store=True,
         readonly=False,
-        index=True,
+        index=True, tracking=True
     )
     company_id = fields.Many2one(
         "res.company",
@@ -46,7 +47,7 @@ class ContractAbstractContract(models.AbstractModel):
     line_recurrence = fields.Boolean(
         string="Recurrence at line level?",
         help="Mark this check if you want to control recurrrence at line level instead"
-        " of all together for the whole contract.",
+        " of all together for the whole contract.", tracking=True
     )
 
     @api.onchange("contract_type")

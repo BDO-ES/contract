@@ -18,16 +18,16 @@ class ContractAbstractContractLine(models.AbstractModel):
 
     product_id = fields.Many2one("product.product", string="Product")
 
-    name = fields.Text(string="Description", required=True)
-    quantity = fields.Float(default=1.0, required=True)
-    uom_id = fields.Many2one("uom.uom", string="Unit of Measure")
+    name = fields.Text(string="Description", required=True, tracking=True)
+    quantity = fields.Float(default=1.0, required=True, tracking=True)
+    uom_id = fields.Many2one("uom.uom", string="Unit of Measure", tracking=True)
     automatic_price = fields.Boolean(
         string="Auto-price?",
         help="If this is marked, the price will be obtained automatically "
         "applying the pricelist to the product. If not, you will be "
-        "able to introduce a manual price",
+        "able to introduce a manual price", tracking=True
     )
-    specific_price = fields.Float(string="Specific Price")
+    specific_price = fields.Float(string="Specific Price", tracking=True)
     price_unit = fields.Float(
         string="Unit Price",
         compute="_compute_price_unit",
@@ -40,7 +40,7 @@ class ContractAbstractContractLine(models.AbstractModel):
         string="Discount (%)",
         digits="Discount",
         help="Discount that is applied in generated invoices."
-        " It should be less or equal to 100",
+        " It should be less or equal to 100", tracking=True
     )
     sequence = fields.Integer(
         string="Sequence",
@@ -52,30 +52,35 @@ class ContractAbstractContractLine(models.AbstractModel):
         store=True,
         readonly=False,
         required=True,
-        copy=True,
+        copy=True, tracking=True
     )
     recurring_invoicing_type = fields.Selection(
         compute="_compute_recurring_invoicing_type",
         store=True,
         readonly=False,
         required=True,
-        copy=True,
+        copy=True, tracking=True
     )
     recurring_interval = fields.Integer(
         compute="_compute_recurring_interval",
         store=True,
         readonly=False,
         required=True,
-        copy=True,
+        copy=True, tracking=True
     )
     date_start = fields.Date(
         compute="_compute_date_start", store=True, readonly=False, copy=True,
+        tracking=True
     )
-    last_date_invoiced = fields.Date(string="Last Date Invoiced")
-    is_canceled = fields.Boolean(string="Canceled", default=False)
-    is_auto_renew = fields.Boolean(string="Auto Renew", default=False)
+    last_date_invoiced = fields.Date(
+        string="Last Date Invoiced", tracking=True)
+    is_canceled = fields.Boolean(
+        string="Canceled", default=False, tracking=True)
+    is_auto_renew = fields.Boolean(
+        string="Auto Renew", default=False, tracking=True)
     auto_renew_interval = fields.Integer(
-        default=1, string="Renew Every", help="Renew every (Days/Week/Month/Year)",
+        default=1, string="Renew Every",
+        help="Renew every (Days/Week/Month/Year)", tracking=True
     )
     auto_renew_rule_type = fields.Selection(
         [
@@ -86,26 +91,26 @@ class ContractAbstractContractLine(models.AbstractModel):
         ],
         default="yearly",
         string="Renewal type",
-        help="Specify Interval for automatic renewal.",
+        help="Specify Interval for automatic renewal.", tracking=True
     )
     termination_notice_interval = fields.Integer(
-        default=1, string="Termination Notice Before"
+        default=1, string="Termination Notice Before", tracking=True
     )
     termination_notice_rule_type = fields.Selection(
         [("daily", "Day(s)"), ("weekly", "Week(s)"), ("monthly", "Month(s)")],
         default="monthly",
-        string="Termination Notice type",
+        string="Termination Notice type", tracking=True
     )
     contract_id = fields.Many2one(
         string="Contract",
         comodel_name="contract.abstract.contract",
         required=True,
-        ondelete="cascade",
+        ondelete="cascade", tracking=True
     )
     display_type = fields.Selection(
         selection=[("line_section", "Section"), ("line_note", "Note")],
         default=False,
-        help="Technical field for UX purpose.",
+        help="Technical field for UX purpose.", tracking=True
     )
     note_invoicing_mode = fields.Selection(
         selection=[
@@ -117,7 +122,7 @@ class ContractAbstractContractLine(models.AbstractModel):
         help="Defines when the Note is invoiced:\n"
         "- With previous line: If the previous line can be invoiced.\n"
         "- With next line: If the next line can be invoiced.\n"
-        "- Custom: Depending on the recurrence to be define.",
+        "- Custom: Depending on the recurrence to be define.", tracking=True
     )
     is_recurring_note = fields.Boolean(compute="_compute_is_recurring_note")
     company_id = fields.Many2one(related="contract_id.company_id", store=True)
