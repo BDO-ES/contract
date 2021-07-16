@@ -541,7 +541,7 @@ class ContractLine(models.Model):
             else:
                 rec.create_invoice_visibility = False
 
-    def _prepare_invoice_line(self, move_form):
+    def _prepare_invoice_line(self, move_form, date_ref=False):
         self.ensure_one()
         dates = self._get_period_to_invoice(
             self.last_date_invoiced, self.recurring_next_date
@@ -550,7 +550,7 @@ class ContractLine(models.Model):
         line_form.display_type = self.display_type
         line_form.product_id = self.product_id
         invoice_line_vals = line_form._values_to_save(all_fields=True)
-        name = self._insert_markers(dates[0], dates[1])
+        name = self._insert_markers(dates[0], dates[1], date_ref)
         invoice_line_vals.update(
             {
                 "account_id": invoice_line_vals["account_id"]
@@ -594,7 +594,7 @@ class ContractLine(models.Model):
         )
         return first_date_invoiced, last_date_invoiced, recurring_next_date
 
-    def _insert_markers(self, first_date_invoiced, last_date_invoiced):
+    def _insert_markers(self, first_date_invoiced, last_date_invoiced, date_ref=False):
         self.ensure_one()
         _logger.error(('_inert_markers OCA self.invoice_name', self.invoice_name))
         _logger.error(('_inert_markers OCA first_date_invoiced', first_date_invoiced))
@@ -604,8 +604,12 @@ class ContractLine(models.Model):
             [("code", "=", self.contract_id.partner_id.lang)])
         date_format = lang.date_format or "%m/%d/%Y"
         name = self.name
-        name = name.replace(
-            "#START#", first_date_invoiced.strftime(date_format))
+        date_start = ''
+        if date_ref:
+            date_start = first_date_invoiced.strftime(date_format)
+        else:
+            date_start = first_date_invoiced.strftime(date_format)
+        name = name.replace("#START#", date_start)
         name = name.replace("#END#", last_date_invoiced.strftime(date_format))
         return name
 
