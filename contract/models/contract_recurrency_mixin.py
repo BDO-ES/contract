@@ -5,6 +5,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class ContractRecurrencyBasicMixin(models.AbstractModel):
@@ -131,7 +133,9 @@ class ContractRecurrencyMixin(models.AbstractModel):
         "recurring_next_date",
     )
     def _compute_next_period_date_end(self):
+        _logger.error(('BASE_compute_next_period_date_end'))
         for rec in self:
+
             rec.next_period_date_end = self.get_next_period_date_end(
                 rec.next_period_date_start,
                 rec.recurring_rule_type,
@@ -175,6 +179,7 @@ class ContractRecurrencyMixin(models.AbstractModel):
         recurring_invoicing_type=False,
         recurring_invoicing_offset=False,
     ):
+        _logger.error(('BASE get_next_period_date_end'))
         """Compute the end date for the next period.
 
         The next period normally depends on recurrence options only.

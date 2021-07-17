@@ -282,6 +282,7 @@
                                   </tree>
                               </field>
                             </group>
+                            <label for="note" string="Términos y condiciones"/>
                             <field name="note" />
                         </page>
                         <page name="modications" string="Modifications">
