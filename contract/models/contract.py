@@ -528,7 +528,8 @@ class ContractContract(models.Model):
                     # nullifying line. We should then cleanup certain values.
                     del invoice_line_vals["company_id"]
                     del invoice_line_vals["company_currency_id"]
-                    invoice_vals["invoice_line_ids"].append((0, 0, invoice_line_vals))
+                    invoice_vals["invoice_line_ids"].append(
+                        (0, 0, invoice_line_vals))
             invoices_values.append(invoice_vals)
             # Force the recomputation of journal items
             del invoice_vals["line_ids"]
